@@ -5,9 +5,17 @@ namespace CurrencyRateAgregator.Api.Services
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CurrencyRateAgregator.Api.Models;
+    using Autofac.Features.Indexed;
 
     public class RateExtrator : IRateExtrator
     {
+        private readonly IIndex<Country, IProvider> _provider;
+        
+        public RateExtrator(IIndex<Country, IProvider> provider)
+        {
+            _provider = provider;
+        }
+
         public Dictionary<Country, IEnumerable<CurrencyRate>> GetRatesByCounries()
         {
             var rates = new Dictionary<Country, IEnumerable<CurrencyRate>>();
@@ -38,7 +46,8 @@ namespace CurrencyRateAgregator.Api.Services
 
         private IEnumerable<CurrencyRate> BYRate()
         {
-            return null;
+            var p = _provider[Country.BY];
+            return p.GetCurrencyRates();
         }
     }
 }

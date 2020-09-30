@@ -1,5 +1,9 @@
 namespace CurrencyRateAgregator.Api
 {
+    using Autofac;
+    using CurrencyRateAgregator.Api.Models;
+    using CurrencyRateAgregator.Api.Services;
+    using CurrencyRateAgregator.Api.Services.BY;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -19,6 +23,12 @@ namespace CurrencyRateAgregator.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IRateExtrator, RateExtrator>();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<ProviderBY>().Keyed<IProvider>(Country.BY);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

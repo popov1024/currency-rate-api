@@ -6,5 +6,6 @@ namespace CurrencyRateAgregator.Api.Models
         USD,
         BYN,
         EUR,
+        UAH,
     }
 }

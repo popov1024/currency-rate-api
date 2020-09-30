@@ -3,24 +3,27 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CurrencyRateAgregator.Api.Models;
+    using CurrencyRateAgregator.Api.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
     [ApiController]
     [Route("[controller]")]
-    public class RateAgregatorController : ControllerBase
+    public class RatesController : ControllerBase
     {
-        private readonly ILogger<RateAgregatorController> _logger;
+        private readonly ILogger<RatesController> _logger;
+        private readonly IRateExtrator _rateExtrator;
 
-        public RateAgregatorController(ILogger<RateAgregatorController> logger)
+        public RatesController(ILogger<RatesController> logger, IRateExtrator rateExtrator)
         {
             _logger = logger;
+            _rateExtrator = rateExtrator;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RateExtrator>> GetAsync()
+        public Dictionary<Country, IEnumerable<CurrencyRate>> GetAsync()
         {
-            return null;
+            return _rateExtrator.GetRatesByCounries();
         }
     }
 }

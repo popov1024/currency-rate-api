@@ -4,8 +4,9 @@ namespace CurrencyRateAgregator.Api.Services
     using System.Threading.Tasks;
     using CurrencyRateAgregator.Api.Models;
 
-    public interface IRateExtrator
+    public interface IProvider
     {
-        Dictionary<Country, IEnumerable<CurrencyRate>> GetRatesByCounries();
+        Task<IEnumerable<CurrencyRate>> GetCurrencyRatesAsync();
+        IEnumerable<CurrencyRate> GetCurrencyRates();
     }
 }

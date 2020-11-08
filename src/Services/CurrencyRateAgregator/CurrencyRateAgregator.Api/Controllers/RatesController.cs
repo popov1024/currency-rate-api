@@ -1,7 +1,6 @@
 ﻿namespace CurrencyRateAgregator.Api.Controllers
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using CurrencyRateAgregator.Api.Models;
     using CurrencyRateAgregator.Api.Services;
     using Microsoft.AspNetCore.Mvc;

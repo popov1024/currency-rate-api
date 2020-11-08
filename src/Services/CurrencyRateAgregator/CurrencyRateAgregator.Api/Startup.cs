@@ -24,6 +24,8 @@ namespace CurrencyRateAgregator.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddMemoryCache();
+            services
                 .AddControllers()
                 .AddNewtonsoftJson(
                     opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter())

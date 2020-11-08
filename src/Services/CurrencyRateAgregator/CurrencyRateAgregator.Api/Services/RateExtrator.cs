@@ -6,14 +6,17 @@ namespace CurrencyRateAgregator.Api.Services
     using System.Threading.Tasks;
     using CurrencyRateAgregator.Api.Models;
     using Autofac.Features.Indexed;
+    using Microsoft.Extensions.Caching.Memory;
 
     public class RateExtrator : IRateExtrator
     {
         private readonly IIndex<Country, IProvider> _provider;
+        private readonly IMemoryCache _cache;
         
-        public RateExtrator(IIndex<Country, IProvider> provider)
+        public RateExtrator(IIndex<Country, IProvider> provider, IMemoryCache cache)
         {
             _provider = provider;
+            _cache = cache;
         }
 
         public Dictionary<Country, IEnumerable<CurrencyRate>> GetRatesByCounries()
@@ -35,13 +38,26 @@ namespace CurrencyRateAgregator.Api.Services
 
         private IEnumerable<CurrencyRate> CountryRate(Country country)
         {
-            switch (country)
+            IEnumerable<CurrencyRate> cacheEntry;
+
+            if (!_cache.TryGetValue(country, out cacheEntry))
             {
-                case Country.BY:
-                    return BYRate();
+                switch (country)
+                {
+                    case Country.BY:
+                        cacheEntry = BYRate();
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(3));
+
+                _cache.Set(country, cacheEntry, cacheEntryOptions);
             }
 
-            throw new Exception();
+            return cacheEntry;
         }
 
         private IEnumerable<CurrencyRate> BYRate()

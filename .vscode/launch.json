@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Services/CurrencyRateAgregator/CurrencyRateAgregator.Api/bin/Debug/netcoreapp3.1/CurrencyRateAgregator.Api.dll",
+            "program": "${workspaceFolder}/src/Services/CurrencyRateAgregator/CurrencyRateAgregator.Api/bin/Debug/net5.0/CurrencyRateAgregator.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Services/CurrencyRateAgregator/CurrencyRateAgregator.Api",
             "stopAtEntry": false,
